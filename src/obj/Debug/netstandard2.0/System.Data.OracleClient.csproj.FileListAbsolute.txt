@@ -1,7 +1,0 @@
-C:\Projetos\System.Data.OracleClient\src\bin\Debug\netstandard2.0\System.Data.OracleClient.deps.json
-C:\Projetos\System.Data.OracleClient\src\bin\Debug\netstandard2.0\System.Data.OracleClient.dll
-C:\Projetos\System.Data.OracleClient\src\bin\Debug\netstandard2.0\System.Data.OracleClient.pdb
-C:\Projetos\System.Data.OracleClient\src\obj\Debug\netstandard2.0\System.Data.OracleClient.csproj.CoreCompileInputs.cache
-C:\Projetos\System.Data.OracleClient\src\obj\Debug\netstandard2.0\System.Data.OracleClient.AssemblyInfo.cs
-C:\Projetos\System.Data.OracleClient\src\obj\Debug\netstandard2.0\System.Data.OracleClient.dll
-C:\Projetos\System.Data.OracleClient\src\obj\Debug\netstandard2.0\System.Data.OracleClient.pdb
