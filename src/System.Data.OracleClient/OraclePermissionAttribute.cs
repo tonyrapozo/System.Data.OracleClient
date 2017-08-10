@@ -23,7 +23,7 @@ using System.Security.Permissions;
 
 namespace System.Data.OracleClient {
 
-	[Serializable]
+	/*[Serializable]
 	[AttributeUsage (AttributeTargets.Assembly | AttributeTargets.Class | 
 			 AttributeTargets.Struct | AttributeTargets.Constructor | 
 			 AttributeTargets.Method, AllowMultiple=true,
@@ -47,5 +47,5 @@ namespace System.Data.OracleClient {
 		}
 
 		#endregion // Methods
-	}
+	}*/
 }

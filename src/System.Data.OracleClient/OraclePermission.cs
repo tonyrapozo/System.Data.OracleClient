@@ -20,11 +20,11 @@
 using System.Collections;
 using System.Data.Common;
 using System.Security;
-using System.Security.Permissions;
+//using System.Security.Permissions;
 
 namespace System.Data.OracleClient {
 
-	[Serializable]
+	/*[Serializable]
 	//[MonoTODO ("Current MS implementation of Data Provider requires FullTrust")]
 	public sealed class OraclePermission : DBDataPermission {
 
@@ -49,5 +49,5 @@ namespace System.Data.OracleClient {
 		{
 			return new OraclePermission (this);
 		}
-	}
+	}*/
 }
