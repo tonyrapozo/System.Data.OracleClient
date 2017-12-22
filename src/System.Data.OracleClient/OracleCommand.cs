@@ -224,7 +224,7 @@ namespace System.Data.OracleClient
 		override
 		void Cancel ()
 		{
-			throw new NotImplementedException ();
+			//throw new NotImplementedException ();
 		}
 
 		//[MonoTODO]

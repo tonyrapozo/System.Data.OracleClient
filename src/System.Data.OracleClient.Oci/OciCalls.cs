@@ -17,6 +17,7 @@
 //
 
 //#define ORACLE_DATA_ACCESS
+#define OCI_WINDOWS
 
 using System;
 using System.Diagnostics;
@@ -27,6 +28,15 @@ namespace System.Data.OracleClient.Oci
 {
 	internal sealed class OciCalls
 	{
+		//string OCI_DLL = "oci";
+#if OCI_WINDOWS
+        const string OCI_DLL = "oci";
+#elif OCI_LINUX
+        const string OCI_DLL = "libclntsh.so";
+#else 
+#error platform not set in OciCalls
+#endif
+
 #if TRACE
 		private static bool traceOci;
 
@@ -48,7 +58,7 @@ namespace System.Data.OracleClient.Oci
 			private OciNativeCalls ()
 			{}
 
-			[DllImport ("oci", EntryPoint = "OCIAttrSet")]
+			[DllImport (OCI_DLL, EntryPoint = "OCIAttrSet")]
 			internal static extern int OCIAttrSet (IntPtr trgthndlp,
 				[MarshalAs (UnmanagedType.U4)] OciHandleType trghndltyp,
 				IntPtr attributep,
@@ -56,7 +66,7 @@ namespace System.Data.OracleClient.Oci
 				[MarshalAs (UnmanagedType.U4)] OciAttributeType attrtype,
 				IntPtr errhp);
 
-			[DllImport ("oci", EntryPoint = "OCIAttrSet")]
+			[DllImport (OCI_DLL, EntryPoint = "OCIAttrSet")]
 			internal static extern int OCIAttrSetString (IntPtr trgthndlp,
 				[MarshalAs (UnmanagedType.U4)] OciHandleType trghndltyp,
 				string attributep,
@@ -65,7 +75,7 @@ namespace System.Data.OracleClient.Oci
 				IntPtr errhp);
 
 #if ORACLE_DATA_ACCESS
-			[DllImport ("oci", EntryPoint = "OCIPasswordChange")]
+			[DllImport (OCI_DLL, EntryPoint = "OCIPasswordChange")]
 			internal static extern int OCIPasswordChange (IntPtr svchp, 
 				IntPtr errhp,
 				byte [] user_name, 
@@ -77,7 +87,7 @@ namespace System.Data.OracleClient.Oci
 				[MarshalAs (UnmanagedType.U4)] uint mode);
 #endif
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIErrorGet (IntPtr hndlp,
 				uint recordno,
 				IntPtr sqlstate,
@@ -86,7 +96,7 @@ namespace System.Data.OracleClient.Oci
 				uint bufsize,
 				[MarshalAs (UnmanagedType.U4)] OciHandleType type);
 
-			[DllImport ("oci", EntryPoint = "OCIBindByName")]
+			[DllImport (OCI_DLL, EntryPoint = "OCIBindByName")]
 			internal static extern int OCIBindByName (IntPtr stmtp,
 				out IntPtr bindpp,
 				IntPtr errhp,
@@ -94,7 +104,7 @@ namespace System.Data.OracleClient.Oci
 				int placeh_len,
 				IntPtr valuep,
 				int value_sz,
-				[MarshalAs (UnmanagedType.U2)] OciDataType dty,
+				[MarshalAs (UnmanagedType.U4)] OciDataType dty,
 				IntPtr indp,
 				IntPtr alenp,
 				IntPtr rcodep,
@@ -102,7 +112,7 @@ namespace System.Data.OracleClient.Oci
 				IntPtr curelp,
 				uint mode);
 
-			[DllImport ("oci", EntryPoint = "OCIBindByName")]
+			[DllImport (OCI_DLL, EntryPoint = "OCIBindByName")]
 			internal static extern int OCIBindByNameRef (IntPtr stmtp,
 				out IntPtr bindpp,
 				IntPtr errhp,
@@ -110,7 +120,7 @@ namespace System.Data.OracleClient.Oci
 				int placeh_len,
 				ref IntPtr valuep,
 				int value_sz,
-				[MarshalAs (UnmanagedType.U2)] OciDataType dty,
+				[MarshalAs (UnmanagedType.U4)] OciDataType dty,
 				IntPtr indp,
 				IntPtr alenp,
 				IntPtr rcodep,
@@ -118,7 +128,7 @@ namespace System.Data.OracleClient.Oci
 				IntPtr curelp,
 				uint mode);
 
-			[DllImport ("oci", EntryPoint = "OCIBindByName")]
+			[DllImport (OCI_DLL, EntryPoint = "OCIBindByName")]
 			internal static extern int OCIBindByNameBytes (IntPtr stmtp,
 				out IntPtr bindpp,
 				IntPtr errhp,
@@ -134,7 +144,7 @@ namespace System.Data.OracleClient.Oci
 				IntPtr curelp,
 				uint mode);
 
-			[DllImport ("oci", EntryPoint = "OCIBindByPos")]
+			[DllImport (OCI_DLL, EntryPoint = "OCIBindByPos")]
 			internal static extern int OCIBindByPos (IntPtr stmtp,
 				out IntPtr bindpp,
 				IntPtr errhp,
@@ -149,14 +159,14 @@ namespace System.Data.OracleClient.Oci
 				IntPtr curelp,
 				uint mode);
 
-			[DllImport ("oci", EntryPoint = "OCIBindByPos")]
+			[DllImport (OCI_DLL, EntryPoint = "OCIBindByPos")]
 			internal static extern int OCIBindByPosBytes (IntPtr stmtp,
 				out IntPtr bindpp,
 				IntPtr errhp,
 				uint position,
 				byte[] valuep,
 				int value_sz,
-				[MarshalAs (UnmanagedType.U2)] OciDataType dty,
+				[MarshalAs (UnmanagedType.U4)] OciDataType dty,
 				IntPtr indp,
 				IntPtr alenp,
 				IntPtr rcodep,
@@ -164,14 +174,14 @@ namespace System.Data.OracleClient.Oci
 				IntPtr curelp,
 				uint mode);
 
-			[DllImport ("oci", EntryPoint = "OCIBindByPos")]
+			[DllImport (OCI_DLL, EntryPoint = "OCIBindByPos")]
 			internal static extern int OCIBindByPosRef (IntPtr stmtp,
 				out IntPtr bindpp,
 				IntPtr errhp,
 				uint position,
 				ref IntPtr valuep,
 				int value_sz,
-				[MarshalAs (UnmanagedType.U2)] OciDataType dty,
+				[MarshalAs (UnmanagedType.U4)] OciDataType dty,
 				IntPtr indp,
 				IntPtr alenp,
 				IntPtr rcodep,
@@ -179,13 +189,13 @@ namespace System.Data.OracleClient.Oci
 				IntPtr curelp,
 				uint mode);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIDateTimeFromText (IntPtr hndl,
 				IntPtr errhp, [In][Out] byte[] date_str, uint dstr_length,
 				[In][Out] byte[] fmt, uint fmt_length,
 				[In][Out] byte[] lang_name, uint lang_length, IntPtr datetime);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIDefineByPos (IntPtr stmtp,
 				out IntPtr defnpp,
 				IntPtr errhp,
@@ -198,7 +208,7 @@ namespace System.Data.OracleClient.Oci
 				IntPtr rcodep,
 				uint mode);
 
-			[DllImport ("oci", EntryPoint="OCIDefineByPos")]
+			[DllImport (OCI_DLL, EntryPoint="OCIDefineByPos")]
 			internal static extern int OCIDefineByPosPtr (IntPtr stmtp,
 				out IntPtr defnpp,
 				IntPtr errhp,
@@ -211,11 +221,11 @@ namespace System.Data.OracleClient.Oci
 				IntPtr rcodep,
 				uint mode);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIDescriptorFree (IntPtr hndlp,
 				[MarshalAs (UnmanagedType.U4)] OciHandleType type);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIEnvCreate (out IntPtr envhpp,
 				[MarshalAs (UnmanagedType.U4)] OciEnvironmentMode mode,
 				IntPtr ctxp,
@@ -225,12 +235,12 @@ namespace System.Data.OracleClient.Oci
 				int xtramem_sz,
 				IntPtr usrmempp);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCICacheFree (IntPtr envhp,
 				IntPtr errhp,
 				IntPtr stmthp);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIAttrGet (IntPtr trgthndlp,
 				[MarshalAs (UnmanagedType.U4)] OciHandleType trghndltyp,
 				out IntPtr attributep,
@@ -238,7 +248,7 @@ namespace System.Data.OracleClient.Oci
 				[MarshalAs (UnmanagedType.U4)] OciAttributeType attrtype,
 				IntPtr errhp);
 
-			[DllImport ("oci", EntryPoint = "OCIAttrGet")]
+			[DllImport (OCI_DLL, EntryPoint = "OCIAttrGet")]
 			internal static extern int OCIAttrGetSByte (IntPtr trgthndlp,
 				[MarshalAs (UnmanagedType.U4)] OciHandleType trghndltyp,
 				out sbyte attributep,
@@ -246,7 +256,7 @@ namespace System.Data.OracleClient.Oci
 				[MarshalAs (UnmanagedType.U4)] OciAttributeType attrtype,
 				IntPtr errhp);
 
-			[DllImport ("oci", EntryPoint = "OCIAttrGet")]
+			[DllImport (OCI_DLL, EntryPoint = "OCIAttrGet")]
 			internal static extern int OCIAttrGetByte (IntPtr trgthndlp,
 				[MarshalAs (UnmanagedType.U4)] OciHandleType trghndltyp,
 				out byte attributep,
@@ -254,7 +264,7 @@ namespace System.Data.OracleClient.Oci
 				[MarshalAs (UnmanagedType.U4)] OciAttributeType attrtype,
 				IntPtr errhp);
 
-			[DllImport ("oci", EntryPoint = "OCIAttrGet")]
+			[DllImport (OCI_DLL, EntryPoint = "OCIAttrGet")]
 			internal static extern int OCIAttrGetUInt16 (IntPtr trgthndlp,
 				[MarshalAs (UnmanagedType.U4)] OciHandleType trghndltyp,
 				out ushort attributep,
@@ -262,7 +272,7 @@ namespace System.Data.OracleClient.Oci
 				[MarshalAs (UnmanagedType.U4)] OciAttributeType attrtype,
 				IntPtr errhp);
 
-			[DllImport ("oci", EntryPoint = "OCIAttrGet")]
+			[DllImport (OCI_DLL, EntryPoint = "OCIAttrGet")]
 			internal static extern int OCIAttrGetInt32 (IntPtr trgthndlp,
 				[MarshalAs (UnmanagedType.U4)] OciHandleType trghndltyp,
 				out int attributep,
@@ -270,7 +280,7 @@ namespace System.Data.OracleClient.Oci
 				[MarshalAs (UnmanagedType.U4)] OciAttributeType attrtype,
 				IntPtr errhp);
 
-			[DllImport ("oci", EntryPoint = "OCIAttrGet")]
+			[DllImport (OCI_DLL, EntryPoint = "OCIAttrGet")]
 			internal static extern int OCIAttrGetIntPtr (IntPtr trgthndlp,
 				[MarshalAs (UnmanagedType.U4)] OciHandleType trghndltyp,
 				out IntPtr attributep,
@@ -278,30 +288,30 @@ namespace System.Data.OracleClient.Oci
 				[MarshalAs (UnmanagedType.U4)] OciAttributeType attrtype,
 				IntPtr errhp);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIDescriptorAlloc (IntPtr parenth,
 				out IntPtr hndlpp,
 				[MarshalAs (UnmanagedType.U4)] OciHandleType type,
 				int xtramem_sz,
 				IntPtr usrmempp);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIHandleAlloc (IntPtr parenth,
 				out IntPtr descpp,
 				[MarshalAs (UnmanagedType.U4)] OciHandleType type,
 				int xtramem_sz,
 				IntPtr usrmempp);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIHandleFree (IntPtr hndlp,
 				[MarshalAs (UnmanagedType.U4)] OciHandleType type);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCILobClose (IntPtr svchp,
 				IntPtr errhp,
 				IntPtr locp);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCILobCopy (IntPtr svchp,
 				IntPtr errhp,
 				IntPtr dst_locp,
@@ -310,32 +320,32 @@ namespace System.Data.OracleClient.Oci
 				uint dst_offset,
 				uint src_offset);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCILobErase (IntPtr svchp,
 				IntPtr errhp,
 				IntPtr locp,
 				ref uint amount,
 				uint offset);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCILobGetChunkSize (IntPtr svchp,
 				IntPtr errhp,
 				IntPtr locp,
 				out uint chunk_size);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCILobGetLength (IntPtr svchp,
 				IntPtr errhp,
 				IntPtr locp,
 				out uint lenp);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCILobOpen (IntPtr svchp,
 				IntPtr errhp,
 				IntPtr locp,
 				byte mode);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCILobRead (IntPtr svchp,
 				IntPtr errhp,
 				IntPtr locp,
@@ -348,13 +358,13 @@ namespace System.Data.OracleClient.Oci
 				ushort csid,
 				byte csfrm);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCILobTrim (IntPtr svchp,
 				IntPtr errhp,
 				IntPtr locp,
 				uint newlen);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCILobWrite (IntPtr svchp,
 				IntPtr errhp,
 				IntPtr locp,
@@ -368,59 +378,59 @@ namespace System.Data.OracleClient.Oci
 				ushort csid,
 				byte csfrm);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCILobCharSetForm (IntPtr svchp, 
 				IntPtr errhp,
 				IntPtr locp,
 				out byte csfrm);
 			
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCINlsGetInfo (IntPtr hndl,
 				IntPtr errhp,
 				[In][Out] byte[] bufp,
 				uint buflen,
 				ushort item);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIServerAttach (IntPtr srvhp,
 				IntPtr errhp,
 				string dblink,
 				[MarshalAs (UnmanagedType.U4)] int dblink_len,
 				uint mode);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIServerDetach (IntPtr srvhp,
 				IntPtr errhp,
 				uint mode);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIServerVersion (IntPtr hndlp,
 				IntPtr errhp,
 				[In][Out] byte[] bufp,
 				uint bufsz,
 				[MarshalAs (UnmanagedType.U4)] OciHandleType type);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCISessionBegin (IntPtr svchp,
 				IntPtr errhp,
 				IntPtr usrhp,
 				[MarshalAs (UnmanagedType.U4)] OciCredentialType credt,
 				[MarshalAs (UnmanagedType.U4)] OciSessionMode mode);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCISessionEnd (IntPtr svchp,
 				IntPtr errhp,
 				IntPtr usrhp,
 				uint mode);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIParamGet (IntPtr hndlp,
 				[MarshalAs (UnmanagedType.U4)] OciHandleType htype,
 				IntPtr errhp,
 				out IntPtr parmdpp,
 				[MarshalAs (UnmanagedType.U4)] int pos);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIStmtExecute (IntPtr svchp,
 				IntPtr stmthp,
 				IntPtr errhp,
@@ -430,7 +440,7 @@ namespace System.Data.OracleClient.Oci
 				IntPtr snap_out,
 				[MarshalAs (UnmanagedType.U4)] OciExecuteMode mode);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIStmtFetch (IntPtr stmtp,
 				IntPtr errhp,
 				uint nrows,
@@ -438,7 +448,7 @@ namespace System.Data.OracleClient.Oci
 				uint mode);
 
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIStmtPrepare (IntPtr stmthp,
 				IntPtr errhp,
 				byte [] stmt,
@@ -446,23 +456,23 @@ namespace System.Data.OracleClient.Oci
 				[MarshalAs (UnmanagedType.U4)] OciStatementLanguage language,
 				[MarshalAs (UnmanagedType.U4)] OciStatementMode mode);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCITransCommit (IntPtr svchp,
 				IntPtr errhp,
 				uint flags);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCITransRollback (IntPtr svchp,
 				IntPtr errhp,
 				uint flags);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCITransStart (IntPtr svchp,
 				IntPtr errhp,
 				uint timeout,
 				[MarshalAs (UnmanagedType.U4)] OciTransactionFlags flags);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCICharSetToUnicode (
 				IntPtr svchp,
 				[MarshalAs (UnmanagedType.LPWStr)] StringBuilder dst,
@@ -471,7 +481,7 @@ namespace System.Data.OracleClient.Oci
 				[MarshalAs (UnmanagedType.I4)] int srclen,
 				out long rsize);
 
-			[DllImport ("oci")]
+			[DllImport (OCI_DLL)]
 			internal static extern int OCIUnicodeToCharSet (
 				IntPtr svchp,
 				byte [] dst,
@@ -493,7 +503,7 @@ namespace System.Data.OracleClient.Oci
 			IntPtr errhp)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, string.Format("OCIAttrSet ({0}, {1})", trghndltyp, attrtype), "OCI");
+			Trace.WriteLineIf(traceOci, string.Format("OCIAttrSet ({0}, {1})", trghndltyp, attrtype), OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIAttrSet (trgthndlp, trghndltyp, attributep, size, attrtype, errhp);
 		}
@@ -506,7 +516,7 @@ namespace System.Data.OracleClient.Oci
 			IntPtr errhp)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, string.Format("OCIAttrSetString ({0}, {1})", trghndltyp, attrtype), "OCI");
+			Trace.WriteLineIf(traceOci, string.Format("OCIAttrSetString ({0}, {1})", trghndltyp, attrtype), OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIAttrSetString (trgthndlp, trghndltyp, attributep, size, attrtype, errhp);
 		}
@@ -520,7 +530,7 @@ namespace System.Data.OracleClient.Oci
 				uint mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, string.Format("OCIPasswordChange"), "OCI");
+			Trace.WriteLineIf(traceOci, string.Format("OCIPasswordChange"), OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIPasswordChange (svchp, errhp, user_name, (uint) usernm_len, opasswd, (uint) opasswd_len, npasswd, (uint) npasswd_len, mode);
 		}
@@ -534,7 +544,7 @@ namespace System.Data.OracleClient.Oci
 			OciHandleType type)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIErrorGet", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIErrorGet", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIErrorGet (hndlp, recordno, sqlstate, out errcodep, bufp, bufsize, type);
 		}
@@ -546,7 +556,7 @@ namespace System.Data.OracleClient.Oci
 			int placeh_len,
 			IntPtr valuep,
 			int value_sz,
-			OciDataType dty,
+			[MarshalAs (UnmanagedType.U4)] OciDataType dty,
 			IntPtr indp,
 			IntPtr alenp,
 			IntPtr rcodep,
@@ -555,7 +565,7 @@ namespace System.Data.OracleClient.Oci
 			uint mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIBindByName", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIBindByName", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIBindByName (stmtp, out bindpp, errhp, placeholder, placeh_len, valuep,
 				value_sz, dty, indp, alenp, rcodep, maxarr_len, curelp, mode);
@@ -568,7 +578,7 @@ namespace System.Data.OracleClient.Oci
 			int placeh_len,
 			ref IntPtr valuep,
 			int value_sz,
-			OciDataType dty,
+			[MarshalAs (UnmanagedType.U4)] OciDataType dty,
 			IntPtr indp,
 			IntPtr alenp,
 			IntPtr rcodep,
@@ -577,7 +587,7 @@ namespace System.Data.OracleClient.Oci
 			uint mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIBindByName", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIBindByName", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIBindByNameRef (stmtp, out bindpp, errhp, placeholder, placeh_len, ref valuep,
 				value_sz, dty, indp, alenp, rcodep, maxarr_len, curelp, mode);
@@ -599,7 +609,7 @@ namespace System.Data.OracleClient.Oci
 			uint mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIBindByName", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIBindByName", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIBindByNameBytes (stmtp, out bindpp, errhp, placeholder, placeh_len, valuep,
 				value_sz, dty, indp, alenp, rcodep, maxarr_len, curelp, mode);
@@ -611,7 +621,7 @@ namespace System.Data.OracleClient.Oci
 			uint position,
 			IntPtr valuep,
 			int value_sz,
-			[MarshalAs (UnmanagedType.U2)] OciDataType dty,
+			[MarshalAs (UnmanagedType.U4)] OciDataType dty,
 			IntPtr indp,
 			IntPtr alenp,
 			IntPtr rcodep,
@@ -620,7 +630,7 @@ namespace System.Data.OracleClient.Oci
 			uint mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIBindByPos", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIBindByPos", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIBindByPos (stmtp, out bindpp, errhp, position, valuep,
 				value_sz, dty, indp, alenp, rcodep, maxarr_len, curelp, mode);
@@ -632,7 +642,7 @@ namespace System.Data.OracleClient.Oci
 			uint position,
 			ref IntPtr valuep,
 			int value_sz,
-			[MarshalAs (UnmanagedType.U2)] OciDataType dty,
+			[MarshalAs (UnmanagedType.U4)] OciDataType dty,
 			IntPtr indp,
 			IntPtr alenp,
 			IntPtr rcodep,
@@ -641,7 +651,7 @@ namespace System.Data.OracleClient.Oci
 			uint mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIBindByPos", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIBindByPos", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIBindByPosRef (stmtp, out bindpp, errhp, position, ref valuep,
 				value_sz, dty, indp, alenp, rcodep, maxarr_len, curelp, mode);
@@ -653,7 +663,7 @@ namespace System.Data.OracleClient.Oci
 			uint position,
 			byte[] valuep,
 			int value_sz,
-			[MarshalAs (UnmanagedType.U2)] OciDataType dty,
+			[MarshalAs (UnmanagedType.U4)] OciDataType dty,
 			IntPtr indp,
 			IntPtr alenp,
 			IntPtr rcodep,
@@ -662,13 +672,13 @@ namespace System.Data.OracleClient.Oci
 			uint mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIBindByPos", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIBindByPos", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIBindByPosBytes (stmtp, out bindpp, errhp, position, valuep,
 				value_sz, dty, indp, alenp, rcodep, maxarr_len, curelp, mode);
 		}
 
-		[DllImport ("oci")]
+		[DllImport (OCI_DLL)]
 		internal static extern void OCIDateTimeConstruct (IntPtr hndl,
 			IntPtr err,
 			IntPtr datetime,
@@ -682,7 +692,7 @@ namespace System.Data.OracleClient.Oci
 			byte[] timezone,
 			uint timezone_length);
 
-		[DllImport ("oci")]
+		[DllImport (OCI_DLL)]
 		internal static extern void OCIDateTimeGetDate (IntPtr hndl,
 			IntPtr err,
 			IntPtr datetime,
@@ -690,7 +700,7 @@ namespace System.Data.OracleClient.Oci
 			out byte month,
 			out byte day);
 
-		[DllImport ("oci")]
+		[DllImport (OCI_DLL)]
 		internal static extern void OCIDateTimeGetTime (IntPtr hndl,
 			IntPtr err,
 			IntPtr datetime,
@@ -699,7 +709,7 @@ namespace System.Data.OracleClient.Oci
 			out byte sec,
 			out uint fsec);
 				
-		[DllImport ("oci")]
+		[DllImport (OCI_DLL)]
 		internal static extern int OCIIntervalGetDaySecond (IntPtr hndl,
 			IntPtr err,
 			out int days,
@@ -709,7 +719,7 @@ namespace System.Data.OracleClient.Oci
 			out int fsec,
 			IntPtr interval);
 
-		[DllImport ("oci")]
+		[DllImport (OCI_DLL)]
 		internal static extern int OCIIntervalGetYearMonth (IntPtr hndl,
 			IntPtr err,
 			out int years,
@@ -722,14 +732,14 @@ namespace System.Data.OracleClient.Oci
 			int position,
 			IntPtr valuep,
 			int value_sz,
-			OciDataType dty,
+			[MarshalAs (UnmanagedType.U4)] OciDataType dty,
 			IntPtr indp,
 			IntPtr rlenp,
 			IntPtr rcodep,
 			uint mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIDefineByPos", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIDefineByPos", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIDefineByPos (stmtp, out defnpp, errhp, position, valuep,
 				value_sz, dty, indp, rlenp, rcodep, mode);
@@ -741,14 +751,14 @@ namespace System.Data.OracleClient.Oci
 			int position,
 			ref IntPtr valuep,
 			int value_sz,
-			OciDataType dty,
+			[MarshalAs (UnmanagedType.U4)] OciDataType dty,
 			IntPtr indp,
 			IntPtr rlenp,
 			IntPtr rcodep,
 			uint mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIDefineByPosPtr", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIDefineByPosPtr", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIDefineByPosPtr (stmtp, out defnpp, errhp, position, ref valuep,
 				value_sz, dty, indp, rlenp, rcodep, mode);
@@ -758,7 +768,7 @@ namespace System.Data.OracleClient.Oci
 			OciHandleType type)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, string.Format("OCIDescriptorFree ({0})", type), "OCI");
+			Trace.WriteLineIf(traceOci, string.Format("OCIDescriptorFree ({0})", type), OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIDescriptorFree (hndlp, type);
 		}
@@ -773,7 +783,7 @@ namespace System.Data.OracleClient.Oci
 			IntPtr usrmempp)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIEnvCreate", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIEnvCreate", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIEnvCreate (out envhpp, mode, ctxp, malocfp, ralocfp, mfreep,
 				xtramem_sz, usrmempp);
@@ -784,7 +794,7 @@ namespace System.Data.OracleClient.Oci
 			IntPtr stmthp)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCICacheFree", "OCI");
+			Trace.WriteLineIf(traceOci, "OCICacheFree", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCICacheFree (envhp, svchp, stmthp);
 		}
@@ -797,7 +807,7 @@ namespace System.Data.OracleClient.Oci
 			IntPtr errhp)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIAttrGet", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIAttrGet", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIAttrGet (trgthndlp, trghndltyp, out attributep, out sizep, attrtype, errhp);
 		}
@@ -810,7 +820,7 @@ namespace System.Data.OracleClient.Oci
 			IntPtr errhp)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIAttrGetSByte", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIAttrGetSByte", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIAttrGetSByte (trgthndlp, trghndltyp, out attributep, sizep, attrtype, errhp);
 		}
@@ -823,7 +833,7 @@ namespace System.Data.OracleClient.Oci
 			IntPtr errhp)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIAttrGetByte", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIAttrGetByte", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIAttrGetByte (trgthndlp, trghndltyp, out attributep, sizep, attrtype, errhp);
 		}
@@ -836,7 +846,7 @@ namespace System.Data.OracleClient.Oci
 			IntPtr errhp)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIAttrGetUInt16", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIAttrGetUInt16", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIAttrGetUInt16 (trgthndlp, trghndltyp, out attributep, sizep, attrtype, errhp);
 		}
@@ -849,7 +859,7 @@ namespace System.Data.OracleClient.Oci
 			IntPtr errhp)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIAttrGetInt32", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIAttrGetInt32", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIAttrGetInt32 (trgthndlp, trghndltyp, out attributep, sizep, attrtype, errhp);
 		}
@@ -862,7 +872,7 @@ namespace System.Data.OracleClient.Oci
 			IntPtr errhp)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIAttrGetIntPtr", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIAttrGetIntPtr", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIAttrGetIntPtr (trgthndlp, trghndltyp, out attributep, sizep, attrtype, errhp);
 		}
@@ -874,7 +884,7 @@ namespace System.Data.OracleClient.Oci
 			IntPtr usrmempp)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIDescriptorAlloc", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIDescriptorAlloc", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIDescriptorAlloc (parenth, out hndlpp, type, xtramem_sz, usrmempp);
 		}
@@ -886,7 +896,7 @@ namespace System.Data.OracleClient.Oci
 			IntPtr usrmempp)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, string.Format("OCIHandleAlloc ({0})", type), "OCI");
+			Trace.WriteLineIf(traceOci, string.Format("OCIHandleAlloc ({0})", type), OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIHandleAlloc (parenth, out descpp, type, xtramem_sz, usrmempp);
 		}
@@ -895,7 +905,7 @@ namespace System.Data.OracleClient.Oci
 			OciHandleType type)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, string.Format("OCIHandleFree ({0})", type), "OCI");
+			Trace.WriteLineIf(traceOci, string.Format("OCIHandleFree ({0})", type), OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIHandleFree (hndlp, type);
 		}
@@ -905,7 +915,7 @@ namespace System.Data.OracleClient.Oci
 			IntPtr locp)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCILobClose", "OCI");
+			Trace.WriteLineIf(traceOci, "OCILobClose", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCILobClose (svchp, errhp, locp);
 		}
@@ -919,7 +929,7 @@ namespace System.Data.OracleClient.Oci
 			uint src_offset)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCILobCopy", "OCI");
+			Trace.WriteLineIf(traceOci, "OCILobCopy", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCILobCopy (svchp, errhp, dst_locp, src_locp, amount, dst_offset, src_offset);
 		}
@@ -931,7 +941,7 @@ namespace System.Data.OracleClient.Oci
 			uint offset)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCILobErase", "OCI");
+			Trace.WriteLineIf(traceOci, "OCILobErase", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCILobErase (svchp, errhp, locp, ref amount, offset);
 		}
@@ -942,7 +952,7 @@ namespace System.Data.OracleClient.Oci
 			out uint chunk_size)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCILobGetChunkSize", "OCI");
+			Trace.WriteLineIf(traceOci, "OCILobGetChunkSize", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCILobGetChunkSize (svchp, errhp, locp, out chunk_size);
 		}
@@ -953,7 +963,7 @@ namespace System.Data.OracleClient.Oci
 			out uint lenp)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCILobGetLength", "OCI");
+			Trace.WriteLineIf(traceOci, "OCILobGetLength", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCILobGetLength (svchp, errhp, locp, out lenp);
 		}
@@ -964,7 +974,7 @@ namespace System.Data.OracleClient.Oci
 			byte mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCILobOpen", "OCI");
+			Trace.WriteLineIf(traceOci, "OCILobOpen", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCILobOpen (svchp, errhp, locp, mode);
 		}
@@ -982,7 +992,7 @@ namespace System.Data.OracleClient.Oci
 			byte csfrm)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCILobRead", "OCI");
+			Trace.WriteLineIf(traceOci, "OCILobRead", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCILobRead (svchp, errhp, locp, ref amtp, offset, bufp, bufl,
 				ctxp, cbfp, csid, csfrm);
@@ -994,7 +1004,7 @@ namespace System.Data.OracleClient.Oci
 			uint newlen)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCILobTrim", "OCI");
+			Trace.WriteLineIf(traceOci, "OCILobTrim", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCILobTrim (svchp, errhp, locp, newlen);
 		}
@@ -1013,7 +1023,7 @@ namespace System.Data.OracleClient.Oci
 			byte csfrm)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCILobWrite", "OCI");
+			Trace.WriteLineIf(traceOci, "OCILobWrite", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCILobWrite (svchp, errhp, locp, ref amtp, offset, bufp, bufl,
 				piece, ctxp, cbfp, csid, csfrm);
@@ -1025,7 +1035,7 @@ namespace System.Data.OracleClient.Oci
 			out byte csfrm)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCILobCharSetForm", "OCI");
+			Trace.WriteLineIf(traceOci, "OCILobCharSetForm", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCILobCharSetForm (svchp, errhp, locp, out csfrm);			
 		}
@@ -1037,7 +1047,7 @@ namespace System.Data.OracleClient.Oci
 			ushort item)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCINlsGetInfo", "OCI");
+			Trace.WriteLineIf(traceOci, "OCINlsGetInfo", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCINlsGetInfo (hndl, errhp, bufp, buflen, item);
 		}
@@ -1049,7 +1059,7 @@ namespace System.Data.OracleClient.Oci
 			uint mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIServerAttach", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIServerAttach", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIServerAttach (srvhp, errhp, dblink, dblink_len, mode);
 		}
@@ -1059,7 +1069,7 @@ namespace System.Data.OracleClient.Oci
 			uint mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIServerDetach", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIServerDetach", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIServerDetach (srvhp, errhp, mode);
 		}
@@ -1071,7 +1081,7 @@ namespace System.Data.OracleClient.Oci
 			OciHandleType hndltype)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIServerVersion", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIServerVersion", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIServerVersion (hndlp,
 				errhp,
@@ -1087,7 +1097,7 @@ namespace System.Data.OracleClient.Oci
 			OciSessionMode mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCISessionBegin", "OCI");
+			Trace.WriteLineIf(traceOci, "OCISessionBegin", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCISessionBegin (svchp, errhp, usrhp, credt, mode);
 		}
@@ -1098,7 +1108,7 @@ namespace System.Data.OracleClient.Oci
 			uint mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCISessionEnd", "OCI");
+			Trace.WriteLineIf(traceOci, "OCISessionEnd", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCISessionEnd (svchp, errhp, usrhp, mode);
 		}
@@ -1110,7 +1120,7 @@ namespace System.Data.OracleClient.Oci
 			int pos)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIParamGet", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIParamGet", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIParamGet (hndlp, htype, errhp, out parmdpp, pos);
 		}
@@ -1125,7 +1135,7 @@ namespace System.Data.OracleClient.Oci
 			OciExecuteMode mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIStmtExecute", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIStmtExecute", OCI_DLL);
 			#endif
 
 			uint it = 0;
@@ -1143,7 +1153,7 @@ namespace System.Data.OracleClient.Oci
 			uint mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIStmtFetch", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIStmtFetch", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCIStmtFetch (stmtp, errhp, nrows, orientation, mode);
 		}
@@ -1157,7 +1167,7 @@ namespace System.Data.OracleClient.Oci
 			OciStatementMode mode)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, string.Format("OCIStmtPrepare ({0})", System.Text.Encoding.UTF8.GetString(stmt)), "OCI");
+			Trace.WriteLineIf(traceOci, string.Format("OCIStmtPrepare ({0})", System.Text.Encoding.UTF8.GetString(stmt)), OCI_DLL);
 			#endif
 
 			return OciNativeCalls.OCIStmtPrepare (stmthp, errhp, stmt, stmt_length, language, mode);
@@ -1168,7 +1178,7 @@ namespace System.Data.OracleClient.Oci
 			uint flags)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCITransCommit", "OCI");
+			Trace.WriteLineIf(traceOci, "OCITransCommit", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCITransCommit (svchp, errhp, flags);
 		}
@@ -1178,7 +1188,7 @@ namespace System.Data.OracleClient.Oci
 			uint flags)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCITransRollback", "OCI");
+			Trace.WriteLineIf(traceOci, "OCITransRollback", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCITransRollback (svchp, errhp, flags);
 		}
@@ -1189,7 +1199,7 @@ namespace System.Data.OracleClient.Oci
 			OciTransactionFlags flags)
 		{
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCITransStart", "OCI");
+			Trace.WriteLineIf(traceOci, "OCITransStart", OCI_DLL);
 			#endif
 			return OciNativeCalls.OCITransStart (svchp, errhp, timeout, flags);
 		}
@@ -1204,7 +1214,26 @@ namespace System.Data.OracleClient.Oci
 			long retSize;
 
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCICharSetToUnicode", "OCI");
+			Trace.WriteLineIf(traceOci, "OCICharSetToUnicode", OCI_DLL);
+			#endif
+			rc = OciNativeCalls.OCICharSetToUnicode (svchp, dst,
+						(dst != null ? dst.Capacity : 0), 
+						src, src.Length, out retSize);
+			rsize = (int) retSize;
+			return(rc);
+		}
+
+		internal static int OCINlsCharSetConvert (
+			IntPtr svchp,
+			StringBuilder dst,
+			byte [] src,
+			out int rsize)
+		{
+			int rc;
+			long retSize;
+
+			#if TRACE
+			Trace.WriteLineIf(traceOci, "OCICharSetToUnicode", OCI_DLL);
 			#endif
 			rc = OciNativeCalls.OCICharSetToUnicode (svchp, dst,
 						(dst != null ? dst.Capacity : 0), 
@@ -1223,7 +1252,7 @@ namespace System.Data.OracleClient.Oci
 			long retSize;
 
 			#if TRACE
-			Trace.WriteLineIf(traceOci, "OCIUnicodeToCharSet", "OCI");
+			Trace.WriteLineIf(traceOci, "OCIUnicodeToCharSet", OCI_DLL);
 			#endif
 
 			rc = OciNativeCalls.OCIUnicodeToCharSet (svchp, dst,
@@ -1233,7 +1262,7 @@ namespace System.Data.OracleClient.Oci
 			return(rc);
 		}
 
-		[DllImport ("oci")]
+		[DllImport (OCI_DLL)]
 		internal static extern int OCIDateTimeCheck (IntPtr hndl,
 			IntPtr err, IntPtr date, out uint valid);
 
