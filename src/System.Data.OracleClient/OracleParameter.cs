@@ -545,7 +545,7 @@ namespace System.Data.OracleClient
 						else if (v is OracleNumber)
 							svalue = ((OracleNumber)v).ToString(con.SessionFormatProvider);
 						else
-							svalue = v.ToString();
+							svalue = v?.ToString();
 
 						svalue = svalue + "\0";
 
