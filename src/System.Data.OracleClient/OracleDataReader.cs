@@ -772,6 +772,8 @@ namespace System.Data.OracleClient
 			if (statement == null)
 				return false;
 
+            hasRows = true;
+
 			return true; 
 		}
 
