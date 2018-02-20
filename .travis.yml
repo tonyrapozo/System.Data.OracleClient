@@ -8,6 +8,6 @@ script:
 deploy:
   skip_cleanup: true
   provider: script
-  script: chmod +x ./deploy.sh && ./deploy.sh $NUGET_API_KEY
+  script: chmod +x ./deploy.sh && ./deploy.sh $NUGET_API_KEY $TRAVIS_BUILD_NUMBER
   on:
     branch: master
